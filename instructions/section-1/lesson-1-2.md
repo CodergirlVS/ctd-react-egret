@@ -54,33 +54,33 @@ Now, open the project directory in your code editor and continue to the next sec
   - [x] Below the import, paste the `todoList` variable
 - [x] Refactor `App.js` to use new `TodoList` component (see below)
   - [x] Open `/src/App.js`
-  - [ ] Below `React`, import `TodoList`
-  - [ ] Below the level-one heading, use the `TodoList` component
-- [ ] Run your application and view in browser
-  - [ ] Verify that your Todo List still appears correctly
+  - [x] Below `React`, import `TodoList`
+  - [x] Below the level-one heading, use the `TodoList` component
+- [x] Run your application and view in browser
+  - [x] Verify that your Todo List still appears correctly
 
 #### Create "Add Todo Form" Component
 
-- [ ] Inside `/src` directory, create a new file called `AddTodoForm.js`
-- [ ] Open `/src/AddTodoForm.js`
-- [ ] Create a new functional React component (see below)
-  - [ ] Import `React` from "react" npm package
-  - [ ] Declare a function named `AddTodoForm`
-  - [ ] Export `AddTodoForm` function as default module
-- [ ] Add a multi-line return statement to your `AddTodoForm` function (this is where we will insert JSX)
+- [x] Inside `/src` directory, create a new file called `AddTodoForm.js`
+- [x] Open `/src/AddTodoForm.js`
+- [x] Create a new functional React component (see below)
+  - [x] Import `React` from "react" npm package
+  - [x] Declare a function named `AddTodoForm`
+  - [x] Export `AddTodoForm` function as default module
+- [x] Add a multi-line return statement to your `AddTodoForm` function (this is where we will insert JSX)
   - hint: use parenthesis for multi-line return
-- [ ] Write JSX for "Add Todo" form (see below)
-  - [ ] Create a `<form>` element
-  - [ ] Inside the `<form>` element, create a `<label>` element with text "Title"
-  - [ ] Next, create a text `<input>` element with `id` "todoTitle"
-  - [ ] Add `htmlFor` attribute to `<label>` element with same value as `id` above
-  - [ ] Next, create a submit `<button>` element with text "Add"
-- [ ] Use `AddTodoForm` component in `App.js` (see below)
-  - [ ] Open `/src/App.js`
-  - [ ] Below `React`, import `AddTodoForm`
-  - [ ] Below the level-one heading, use the `AddTodoForm` component
-- [ ] Run your application and view in browser
-  - [ ] Verify that "Add Todo" form appears below heading
+- [x] Write JSX for "Add Todo" form (see below)
+  - [x] Create a `<form>` element
+  - [x] Inside the `<form>` element, create a `<label>` element with text "Title"
+  - [x] Next, create a text `<input>` element with `id` "todoTitle"
+  - [x] Add `htmlFor` attribute to `<label>` element with same value as `id` above
+  - [x] Next, create a submit `<button>` element with text "Add"
+- [x] Use `AddTodoForm` component in `App.js` (see below)
+  - [x] Open `/src/App.js`
+  - [x] Below `React`, import `AddTodoForm`
+  - [x] Below the level-one heading, use the `AddTodoForm` component
+- [x] Run your application and view in browser
+  - [x] Verify that "Add Todo" form appears below heading
 
 #### Final Result
 
