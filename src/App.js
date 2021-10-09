@@ -2,38 +2,108 @@ import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 
-function useSemiPersistentState() {
-  const [todoList, setTodoList] = React.useState(
-    // JSON.parse(localStorage.getItem("savedTodoList")) || []
-    localStorage.getItem("savedTodoList")
-      ? JSON.parse(localStorage.getItem("savedTodoList"))
-      : []
-  );
+const initialTodolist = JSON.parse(localStorage.getItem("savedTodoList"));
 
+function useSemiPersistentState() {
+  const [todoList, dispatchTodoList] = React.useReducer(todoListReducer, {
+    data: [],
+    isLoading: false,
+    isError: false,
+  });
   React.useEffect(() => {
     localStorage.setItem("savedTodoList", JSON.stringify(todoList));
   }, [todoList]);
 
-  return [todoList, setTodoList];
+  return [todoList, dispatchTodoList];
 }
 
+const todoListReducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_TODO_LIST":
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+      };
+    case "FETCH_TODO_LIST_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload.data,
+      };
+    case "FETCH_TODO_LIST_ERROR":
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    case "ADD_TODO":
+      return {
+        ...state,
+        data: [...state.data, action.payload],
+      };
+    case "REMOVE_TODO_LIST":
+      return {
+        ...state,
+        data: state.data.filter((item) => item.id !== action.payload),
+      };
+    default:
+      throw new Error();
+  }
+};
+
+const getAsyncList = () =>
+  new Promise((resolve, reject) => {
+    return setTimeout(
+      () =>
+        resolve({
+          data: { todoList: initialTodolist },
+        }),
+      2000
+    );
+  });
+
 function App() {
-  const [todoList, setTodoList] = useSemiPersistentState();
+  const [todoList, dispatchTodoList] = useSemiPersistentState();
+
+  React.useEffect(() => {
+    dispatchTodoList({ type: "FETCH_TODO_LIST" });
+
+    getAsyncList()
+      .then((result) => {
+        dispatchTodoList({
+          type: "FETCH_TODO_LIST_SUCCESS",
+          payload: result.data.todoList,
+        });
+      })
+      .catch((error) => dispatchTodoList({ type: "FETCH_TODO_LIST_ERROR" }));
+  }, []);
 
   const addTodo = (newTodo) => {
-    setTodoList([...todoList, newTodo]);
+    dispatchTodoList({
+      type: "ADD_TODO",
+      payload: newTodo,
+    });
   };
 
   const removeTodo = (id) => {
-    const newTodoList = todoList.filter((item) => item.id !== id);
-    setTodoList(newTodoList);
+    dispatchTodoList({
+      type: "REMOVE_TODO_LIST",
+      payload: id,
+    });
   };
 
   return (
     <>
       <h1>Todo List</h1>
+      {todoList.isError && <p>Something went wrong ...</p>}
       <AddTodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+      {todoList.isLoading ? (
+        <p>Loading....</p>
+      ) : (
+        <TodoList todoList={todoList.data} onRemoveTodo={removeTodo} />
+      )}
     </>
   );
 }
