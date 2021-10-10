@@ -2,17 +2,17 @@ import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 
-//const initialTodolist = JSON.parse(localStorage.getItem("savedTodoList"));
+// const initialTodolist = JSON.parse(localStorage.getItem("savedTodoList"));
 
 function useSemiPersistentState() {
   const [todoList, dispatchTodoList] = React.useReducer(todoListReducer, {
-    data: [],
-    isLoading: false,
+    title: [],
+    isLoading: true,
     isError: false,
   });
   React.useEffect(() => {
     if (!todoList.isLoading) {
-      localStorage.setItem("savedTodoList", JSON.stringify(todoList.data));
+      localStorage.setItem("savedTodoList", JSON.stringify(todoList.title));
     }
   }, [todoList]);
 
@@ -32,7 +32,7 @@ const todoListReducer = (state, action) => {
         ...state,
         isLoading: false,
         isError: false,
-        data: action.payload,
+        title: action.payload,
       };
     case "FETCH_TODO_LIST_ERROR":
       return {
@@ -43,12 +43,14 @@ const todoListReducer = (state, action) => {
     case "ADD_TODO":
       return {
         ...state,
-        data: [...state.data, action.payload],
+        isLoading: false,
+        isError: false,
+        title: [...state.title, action.payload],
       };
     case "REMOVE_TODO_LIST":
       return {
         ...state,
-        data: state.data.filter((item) => item.id !== action.payload),
+        title: state.title.filter((item) => item.id !== action.payload),
       };
     default:
       throw new Error();
@@ -57,7 +59,7 @@ const todoListReducer = (state, action) => {
 
 const getAsyncList = () =>
   new Promise((resolve, reject) => {
-    return setTimeout(
+    setTimeout(
       () =>
         resolve({
           data: { todoList: JSON.parse(localStorage.getItem("savedTodoList")) },
@@ -74,15 +76,13 @@ function App() {
 
     getAsyncList()
       .then((result) => {
-        console.log(todoList.data);
         dispatchTodoList({
           type: "FETCH_TODO_LIST_SUCCESS",
           payload: result.data.todoList,
         });
       })
       .catch(() => dispatchTodoList({ type: "FETCH_TODO_LIST_ERROR" }));
-  }, []);
-  console.log(todoList);
+  }, [dispatchTodoList]);
 
   const addTodo = (newTodo) => {
     dispatchTodoList({
@@ -106,7 +106,7 @@ function App() {
       {todoList.isLoading ? (
         <p>Loading....</p>
       ) : (
-        <TodoList todoList={todoList.data} onRemoveTodo={removeTodo} />
+        <TodoList todoList={todoList.title} onRemoveTodo={removeTodo} />
       )}
     </>
   );
