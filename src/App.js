@@ -2,7 +2,7 @@ import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 
-const initialTodolist = JSON.parse(localStorage.getItem("savedTodoList"));
+//const initialTodolist = JSON.parse(localStorage.getItem("savedTodoList"));
 
 function useSemiPersistentState() {
   const [todoList, dispatchTodoList] = React.useReducer(todoListReducer, {
@@ -11,7 +11,9 @@ function useSemiPersistentState() {
     isError: false,
   });
   React.useEffect(() => {
-    localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+    if (!todoList.isLoading) {
+      localStorage.setItem("savedTodoList", JSON.stringify(todoList.data));
+    }
   }, [todoList]);
 
   return [todoList, dispatchTodoList];
@@ -30,7 +32,7 @@ const todoListReducer = (state, action) => {
         ...state,
         isLoading: false,
         isError: false,
-        data: action.payload.data,
+        data: action.payload,
       };
     case "FETCH_TODO_LIST_ERROR":
       return {
@@ -58,7 +60,7 @@ const getAsyncList = () =>
     return setTimeout(
       () =>
         resolve({
-          data: { todoList: initialTodolist },
+          data: { todoList: JSON.parse(localStorage.getItem("savedTodoList")) },
         }),
       2000
     );
@@ -72,13 +74,15 @@ function App() {
 
     getAsyncList()
       .then((result) => {
+        console.log(todoList.data);
         dispatchTodoList({
           type: "FETCH_TODO_LIST_SUCCESS",
           payload: result.data.todoList,
         });
       })
-      .catch((error) => dispatchTodoList({ type: "FETCH_TODO_LIST_ERROR" }));
+      .catch(() => dispatchTodoList({ type: "FETCH_TODO_LIST_ERROR" }));
   }, []);
+  console.log(todoList);
 
   const addTodo = (newTodo) => {
     dispatchTodoList({
