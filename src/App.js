@@ -84,7 +84,7 @@ function App() {
       })
       .catch(() => dispatchTodoList({ type: "FETCH_TODO_LIST_ERROR" }));
   }, [dispatchTodoList]);
-  console.log(todoList.title);
+
   const addTodo = (newTodo) => {
     dispatchTodoList({
       type: "ADD_TODO",
