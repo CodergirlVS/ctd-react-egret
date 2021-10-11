@@ -2,20 +2,7 @@ import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 
-const initialTodolist = JSON.parse(localStorage.getItem("savedTodoList"));
-
-function useSemiPersistentState() {
-  const [todoList, dispatchTodoList] = React.useReducer(todoListReducer, {
-    data: [],
-    isLoading: false,
-    isError: false,
-  });
-  React.useEffect(() => {
-    localStorage.setItem("savedTodoList", JSON.stringify(todoList));
-  }, [todoList]);
-
-  return [todoList, dispatchTodoList];
-}
+const initialTodoList = JSON.parse(localStorage.getItem("savedTodoList"));
 
 const todoListReducer = (state, action) => {
   switch (action.type) {
@@ -30,7 +17,7 @@ const todoListReducer = (state, action) => {
         ...state,
         isLoading: false,
         isError: false,
-        data: action.payload.data,
+        title: action.payload,
       };
     case "FETCH_TODO_LIST_ERROR":
       return {
@@ -41,12 +28,14 @@ const todoListReducer = (state, action) => {
     case "ADD_TODO":
       return {
         ...state,
-        data: [...state.data, action.payload],
+        isLoading: false,
+        isError: false,
+        title: [...state.title, action.payload],
       };
     case "REMOVE_TODO_LIST":
       return {
         ...state,
-        data: state.data.filter((item) => item.id !== action.payload),
+        title: state.title.filter((item) => item.id !== action.payload),
       };
     default:
       throw new Error();
@@ -58,14 +47,22 @@ const getAsyncList = () =>
     return setTimeout(
       () =>
         resolve({
-          data: { todoList: initialTodolist },
+          data: { todoList: initialTodoList },
         }),
       2000
     );
   });
 
 function App() {
-  const [todoList, dispatchTodoList] = useSemiPersistentState();
+  const [todoList, dispatchTodoList] = React.useReducer(todoListReducer, {
+    title: [],
+    isLoading: false,
+    isError: false,
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem("savedTodoList", JSON.stringify(todoList.title));
+  }, [todoList]);
 
   React.useEffect(() => {
     dispatchTodoList({ type: "FETCH_TODO_LIST" });
@@ -77,7 +74,7 @@ function App() {
           payload: result.data.todoList,
         });
       })
-      .catch((error) => dispatchTodoList({ type: "FETCH_TODO_LIST_ERROR" }));
+      .catch(() => dispatchTodoList({ type: "FETCH_TODO_LIST_ERROR" }));
   }, []);
 
   const addTodo = (newTodo) => {
@@ -100,9 +97,11 @@ function App() {
       {todoList.isError && <p>Something went wrong ...</p>}
       <AddTodoForm onAddTodo={addTodo} />
       {todoList.isLoading ? (
-        <p>Loading....</p>
+        <p>
+          <strong>Loading....</strong>
+        </p>
       ) : (
-        <TodoList todoList={todoList.data} onRemoveTodo={removeTodo} />
+        <TodoList todoList={todoList.title} onRemoveTodo={removeTodo} />
       )}
     </>
   );
