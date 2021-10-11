@@ -76,6 +76,7 @@ function App() {
 
     getAsyncList()
       .then((result) => {
+        console.log(todoList);
         dispatchTodoList({
           type: "FETCH_TODO_LIST_SUCCESS",
           payload: result.data.todoList,
