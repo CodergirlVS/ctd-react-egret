@@ -2,8 +2,6 @@ import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 
-// const initialTodolist = JSON.parse(localStorage.getItem("savedTodoList"));
-
 function useSemiPersistentState() {
   const [todoList, dispatchTodoList] = React.useReducer(todoListReducer, {
     title: [],
