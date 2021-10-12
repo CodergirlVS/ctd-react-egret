@@ -16,6 +16,7 @@ const todoListReducer = (state, action) => {
       return {
         ...state,
         isLoading: false,
+
         isError: false,
         title: action.payload,
       };
@@ -69,7 +70,6 @@ function App() {
 
     getAsyncList()
       .then((result) => {
-        console.log(todoList);
         dispatchTodoList({
           type: "FETCH_TODO_LIST_SUCCESS",
           payload: result.data.todoList,
