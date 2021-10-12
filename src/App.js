@@ -2,7 +2,6 @@ import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 
-
 const initialTodoList = JSON.parse(localStorage.getItem("savedTodoList"));
 
 const todoListReducer = (state, action) => {
@@ -45,7 +44,7 @@ const todoListReducer = (state, action) => {
 
 const getAsyncList = () =>
   new Promise((resolve, reject) => {
-    setTimeout(
+    return setTimeout(
       () =>
         resolve({
           data: { todoList: initialTodoList },
