@@ -2,20 +2,7 @@ import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 
-function useSemiPersistentState() {
-  const [todoList, dispatchTodoList] = React.useReducer(todoListReducer, {
-    title: [],
-    isLoading: true,
-    isError: false,
-  });
-  React.useEffect(() => {
-    if (!todoList.isLoading) {
-      localStorage.setItem("savedTodoList", JSON.stringify(todoList.title));
-    }
-  }, [todoList]);
-
-  return [todoList, dispatchTodoList];
-}
+const initialTodoList = JSON.parse(localStorage.getItem("savedTodoList"));
 
 const todoListReducer = (state, action) => {
   switch (action.type) {
@@ -57,30 +44,39 @@ const todoListReducer = (state, action) => {
 
 const getAsyncList = () =>
   new Promise((resolve, reject) => {
-    setTimeout(
+    return setTimeout(
       () =>
         resolve({
-          data: { todoList: JSON.parse(localStorage.getItem("savedTodoList")) },
+          data: { todoList: initialTodoList },
         }),
       2000
     );
   });
 
 function App() {
-  const [todoList, dispatchTodoList] = useSemiPersistentState();
+  const [todoList, dispatchTodoList] = React.useReducer(todoListReducer, {
+    title: [],
+    isLoading: false,
+    isError: false,
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem("savedTodoList", JSON.stringify(todoList.title));
+  }, [todoList]);
 
   React.useEffect(() => {
     dispatchTodoList({ type: "FETCH_TODO_LIST" });
 
     getAsyncList()
       .then((result) => {
+        console.log(todoList);
         dispatchTodoList({
           type: "FETCH_TODO_LIST_SUCCESS",
           payload: result.data.todoList,
         });
       })
       .catch(() => dispatchTodoList({ type: "FETCH_TODO_LIST_ERROR" }));
-  }, [dispatchTodoList]);
+  }, []);
 
   const addTodo = (newTodo) => {
     dispatchTodoList({
@@ -102,7 +98,9 @@ function App() {
       {todoList.isError && <p>Something went wrong ...</p>}
       <AddTodoForm onAddTodo={addTodo} />
       {todoList.isLoading ? (
-        <p>Loading....</p>
+        <p>
+          <strong>Loading....</strong>
+        </p>
       ) : (
         <TodoList todoList={todoList.title} onRemoveTodo={removeTodo} />
       )}
