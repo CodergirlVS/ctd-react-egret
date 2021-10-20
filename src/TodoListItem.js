@@ -1,7 +1,6 @@
 import React from "react";
 
 function TodoListItem({ todo, onRemoveTodo }) {
-  console.log(todo);
   return (
     <li>
       <div>{todo.fields.Title}</div>

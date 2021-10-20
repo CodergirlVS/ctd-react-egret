@@ -9,7 +9,7 @@ function App() {
 
   React.useEffect(() => {
     fetch(
-      `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`,
+      `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default?sort%5B0%5D%5Bfield%5D=Title&sort%5B0%5D%5Bdirection%5D=asc`,
       {
         headers: {
           Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
@@ -20,20 +20,49 @@ function App() {
       .then((result) => setTodoList(result.records), setIsLoading(false))
       .catch(() => setIsError(true));
   }, []);
-
-  React.useEffect(() => {
-    if (!isLoading) {
-      localStorage.setItem("savedTodoList", JSON.stringify(todoList));
-    }
-  }, [todoList, isLoading]);
+  console.log(todoList);
 
   const addTodo = (newTodo) => {
-    setTodoList([...todoList, newTodo]);
+    fetch(
+      `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          records: [
+            {
+              fields: {
+                Title: newTodo,
+              },
+            },
+          ],
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setTodoList([...todoList, ...data.records]);
+      })
+      .catch((error) => console.warn("error creating node", error));
   };
-
+  console.log(todoList);
   const removeTodo = (id) => {
-    const newTodoList = todoList.filter((item) => item.id !== id);
-    setTodoList(newTodoList);
+    fetch(
+      `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default?records[]=${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) =>
+        setTodoList(todoList.filter((item) => item.id !== data.records[0].id))
+      );
   };
 
   return (
