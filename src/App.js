@@ -1,6 +1,7 @@
 import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 function App() {
   const [todoList, setTodoList] = React.useState([]);
@@ -20,7 +21,6 @@ function App() {
       .then((result) => setTodoList(result.records), setIsLoading(false))
       .catch(() => setIsError(true));
   }, []);
-  console.log(todoList);
 
   const addTodo = (newTodo) => {
     fetch(
@@ -48,7 +48,6 @@ function App() {
       })
       .catch((error) => console.warn("error creating node", error));
   };
-  console.log(todoList);
   const removeTodo = (id) => {
     fetch(
       `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default?records[]=${id}`,
@@ -66,18 +65,27 @@ function App() {
   };
 
   return (
-    <>
-      <h1>Todo List</h1>
-      {isError && <p>Something went wrong ...</p>}
-      <AddTodoForm onAddTodo={addTodo} />
-      {isLoading ? (
-        <p>
-          <strong>Loading.....</strong>
-        </p>
-      ) : (
-        <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
-      )}
-    </>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          <>
+            <h1>Todo List</h1>
+            {isError && <p>Something went wrong ...</p>}
+            <AddTodoForm onAddTodo={addTodo} />
+            {isLoading ? (
+              <p>
+                <strong>Loading.....</strong>
+              </p>
+            ) : (
+              <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+            )}
+          </>
+        </Route>
+        <Route path="/new">
+          <h1>New Todo List</h1>
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
