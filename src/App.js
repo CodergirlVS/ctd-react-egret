@@ -9,10 +9,10 @@ function App() {
       <nav>
         <ul>
           <li>
-            <Link to="/List1"> List1</Link>
+            <Link to="/List1"> Work </Link>
           </li>
           <li>
-            <Link to="/List2">List2 </Link>
+            <Link to="/List2"> Personal </Link>
           </li>
         </ul>
       </nav>
