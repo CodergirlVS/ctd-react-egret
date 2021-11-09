@@ -2,6 +2,7 @@ import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import styles from "./App.modules.css";
 
 function App() {
   const [todoList, setTodoList] = React.useState([]);
@@ -68,7 +69,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <>
+          <div className={styles.container}>
             <h1>Todo List</h1>
             {isError && <p>Something went wrong ...</p>}
             <AddTodoForm onAddTodo={addTodo} />
@@ -79,7 +80,7 @@ function App() {
             ) : (
               <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
             )}
-          </>
+          </div>
         </Route>
         <Route path="/new">
           <h1>New Todo List</h1>
