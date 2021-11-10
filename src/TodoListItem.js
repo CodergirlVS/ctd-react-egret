@@ -4,8 +4,13 @@ import styles from "./TodoListItem.module.css";
 function TodoListItem({ todo, onRemoveTodo }) {
   return (
     <li className={styles.ListItems}>
-      <div>{todo.fields.Title}</div>
-      <button type="button" onClick={() => onRemoveTodo(todo.id)}>
+      <input type="checkbox" />
+      <span>{todo.fields.Title}</span>
+      <button
+        className={styles.RmvButton}
+        type="button"
+        onClick={() => onRemoveTodo(todo.id)}
+      >
         Remove
       </button>
     </li>

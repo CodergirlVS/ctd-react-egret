@@ -73,7 +73,7 @@ function TodoContainer({ tableName }) {
   };
 
   return (
-    <div className={styles.container}>
+    <>
       <h1>{tableName}</h1>
       {isError && <p>Something went wrong ...</p>}
       <AddTodoForm onAddTodo={addTodo} />
@@ -84,7 +84,7 @@ function TodoContainer({ tableName }) {
       ) : (
         <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
       )}
-    </div>
+    </>
   );
 }
 
