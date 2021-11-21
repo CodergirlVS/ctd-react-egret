@@ -1,3 +1,49 @@
 .ListItems {
-  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  max-width: 600px;
+  padding: 8px 8px 0 8px;
+  list-style: none;
+  align-items: flex-end;
+}
+
+.StarButton {
+  background-color: transparent;
+  box-sizing: unset;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  font-size: 25px;
+  cursor: pointer;
+  text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+}
+.StarButton:onclick {
+  color: yellow;
+}
+
+i {
+  padding: 0;
+}
+
+.RmvButton {
+  height: 21px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+  background-color: transparent;
+  color: gray;
+  padding: 0px;
+  margin: 0px;
+}
+.strikethrough {
+  margin: 0px;
+  margin-right: 8px;
+  margin-top: 8px;
+}
+.strikethrough:checked + span {
+  text-decoration: line-through;
 }
