@@ -1,0 +1,11 @@
+.Title {
+  font-weight: 700;
+  font-size: 30px;
+  margin-right: 2px;
+}
+.InputAdd {
+  height: 37px;
+  width: 50%;
+  margin: 5px;
+  font-size: 20px;
+}

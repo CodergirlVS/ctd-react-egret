@@ -1,20 +1,49 @@
 .ListItems {
-  font-size: medium;
+  font-size: 20px;
+  font-weight: 600;
+  position: relative;
   display: flex;
-  align-items: left;
   flex-direction: row;
-  justify-content: space-between;
-  padding: 20px;
+  justify-content: flex-start;
+  max-width: 600px;
+  padding: 8px 8px 0 8px;
+  list-style: none;
+  align-items: flex-end;
+}
+
+.StarButton {
+  background-color: transparent;
+  box-sizing: unset;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  font-size: 25px;
+  cursor: pointer;
+  text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+}
+.StarButton:onclick {
+  color: yellow;
+}
+
+i {
+  padding: 0;
 }
 
 .RmvButton {
-  background: transparent;
-  border: 1px solid #171212;
-  padding: 5px;
+  height: 21px;
+  border: none;
   cursor: pointer;
   transition: all 0.1s ease-in;
+  background-color: transparent;
+  color: gray;
+  padding: 0px;
+  margin: 0px;
 }
-.RmvButton:hover {
-  background: #171212;
-  color: #ffffff;
+.strikethrough {
+  margin: 0px;
+  margin-right: 8px;
+  margin-top: 8px;
+}
+.strikethrough:checked + span {
+  text-decoration: line-through;
 }
