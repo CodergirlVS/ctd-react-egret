@@ -5,9 +5,6 @@ import { BrowserRouter, Link } from "react-router-dom";
 import Counter from "./Counter.js";
 
 function Nav() {
-  const { count, increment } = useContext(Counter);
-  console.log("Work:" + count.Work);
-
   return (
     <BrowserRouter>
       <nav className={styles.NavBar}>
@@ -41,7 +38,7 @@ function Nav() {
               style={{ color: "green" }}
             ></i>
             <Link to="/List1">Work</Link>
-            <span className={styles.Count}>{count.Work}</span>
+            <span className={styles.Count}></span>
           </li>
           <li>
             <i
@@ -50,7 +47,7 @@ function Nav() {
               style={{ color: "blue" }}
             ></i>
             <Link to="/List2">Personal</Link>
-            <span className={styles.Count}>{count.Personal}</span>
+            <span className={styles.Count}></span>
           </li>
           <li>
             <i
@@ -59,7 +56,7 @@ function Nav() {
               style={{ color: "#fa3983" }}
             ></i>
             <Link to="/List3">Volunteer</Link>
-            <span className={styles.Count}>{count.Volunteer}</span>
+            <span className={styles.Count}></span>
           </li>
         </ul>
       </nav>

@@ -8,29 +8,32 @@
   max-width: 600px;
   padding: 8px 8px 0 8px;
   list-style: none;
-  align-items: flex-end;
+  align-items: center;
+}
+
+.ListItems > *:not(:last-child) {
+  margin-right: 20px;
 }
 
 .StarButton {
   background-color: transparent;
-  box-sizing: unset;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  font-size: 25px;
+  border: 1px;
+  transition: all 0.5s ease-in-out;
   cursor: pointer;
-  text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
-}
-.StarButton:onclick {
-  color: yellow;
+  height: 20px;
 }
 
-i {
-  padding: 0;
+.StarButton > svg {
+  height: 100%;
+  fill: black;
+}
+
+.StarButtonActive > svg {
+  fill: yellow;
 }
 
 .RmvButton {
-  height: 21px;
+  height: 20px;
   border: none;
   cursor: pointer;
   transition: all 0.1s ease-in;
@@ -41,8 +44,6 @@ i {
 }
 .strikethrough {
   margin: 0px;
-  margin-right: 8px;
-  margin-top: 8px;
 }
 .strikethrough:checked + span {
   text-decoration: line-through;
