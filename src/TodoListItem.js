@@ -1,19 +1,30 @@
 import React from "react";
 import styles from "./TodoListItem.module.css";
 import Image from "./Images/RmButton.svg";
+import { ReactComponent as Star } from "./Images/StarButton.svg";
+import className from "classnames";
 
 function TodoListItem({ todo, onRemoveTodo, onChange }) {
+  const starBtnClass = className(styles.StarButton, {
+    [styles.StarButtonActive]: true,
+  });
+
   return (
     <li className={styles.ListItems}>
       <input type="checkbox" className={styles.strikethrough} />
-      <span style={{ marginRight: "8px" }}>{todo.fields.Title}</span>
+      <span>{todo.fields.Title}</span>
       <button
         type="button"
-        className={styles.StarButton}
-        onClick={() => onChange}
+        className={starBtnClass}
+        onClick={() => {
+          onChange(todo.id);
+        }}
       >
-        <i class="fa fa-star-o" aria-hidden="true"></i>
+        <Star />
+
+        {/* <i class="fa fa-star" aria-hidden="true"></i> */}
       </button>
+
       <button
         className={styles.RmvButton}
         type="button"

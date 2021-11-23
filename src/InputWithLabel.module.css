@@ -1,11 +1,13 @@
-.Title {
-  font-weight: 700;
-  font-size: 30px;
-  margin-right: 2px;
-}
 .InputAdd {
   height: 37px;
   width: 50%;
   margin: 5px;
   font-size: 20px;
+}
+
+@media (max-width: 490px) {
+  .InputAdd {
+    height: 26px;
+    font-size: 14px;
+  }
 }

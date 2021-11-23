@@ -2,15 +2,11 @@ import React from "react";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 import styles from "./TodoContainer.module.css";
-//import Counter from "./Counter.js";
 
 function TodoContainer({ tableName, increment }) {
   const [todoList, setTodoList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isError, setIsError] = React.useState(false);
-
-  //const { count,  } = useContext(Counter);
-  //console.log("Volunteer:" + countContext.current.count.Work);
 
   React.useEffect(() => {
     fetch(
@@ -29,9 +25,6 @@ function TodoContainer({ tableName, increment }) {
       .then((result) => {
         setTodoList(result.records);
         setIsLoading(false);
-        console.log("Its working");
-        // setCount.tableName(todoList.length);
-        increment([todoList.length]);
       })
       .catch(() => setIsError(true));
   }, [tableName]);
@@ -61,7 +54,6 @@ function TodoContainer({ tableName, increment }) {
       .then((response) => response.json())
       .then((data) => {
         setTodoList([...todoList, ...data.records]);
-        //setCounter(todoList.length);
       })
       .catch((error) => console.warn("error creating node", error));
   };
@@ -81,38 +73,72 @@ function TodoContainer({ tableName, increment }) {
       .then((response) => response.json())
       .then((data) => {
         setTodoList(todoList.filter((item) => item.id !== data.records[0].id));
-        //setCounter(todoList.length);
       });
   };
 
-  const [priority, setPriority] = React.useState(0);
+  const updateTodo = (id, fields) => {
+    fetch(
+      `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID
+      }/${encodeURI(tableName)}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+          "Content-Type: application/json"
+        },
+        body: JSON.stringify({
+          records: [
+            {
+              id: id,
+              fields: {
+                Priority: fields.Priority,
+              },
+            },
+          ],
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result)
+      })
+    }
 
-  const handlePriorityCount = (event) => {
-    setPriority(priority + 1);
-  };
+const [priorityCount, setPriorityCount] = React.useState({ count: 0 });
 
-  console.log(priority);
+    const handlePriorityCount = (id) => {
+      const clickedItem = todoList.find((item) => item.id === id);
 
-  return (
-    <>
-      <h1 className={styles.H1}>{tableName}</h1>
-      {isError && <p>Something went wrong ...</p>}
-      <p>Priority count is {priority}</p>
-      <AddTodoForm onAddTodo={addTodo} />
-      {isLoading ? (
-        <p>
-          <strong>Loading.....</strong>
-        </p>
-      ) : (
-        <TodoList
-          todoList={todoList}
-          onRemoveTodo={removeTodo}
-          onchange={handlePriorityCount}
-        />
-      )}
-      {/* <span>{count.Work}</span> */}
-    </>
-  );
-}
+      if (clickedItem.Priority) {
+        setPriorityCount({
+          count: priorityCount.count - 1,
+        });
+      } else {
+        setPriorityCount({
+          count: priorityCount.count + 1,
+        });
+      }
+    };
+
+    return (
+      <>
+        <h1 className={styles.H1}>{tableName}</h1>
+        {isError && <p>Something went wrong ...</p>}
+        <p>Priority count is {priorityCount.count}</p>
+        <AddTodoForm onAddTodo={addTodo} />
+        {isLoading ? (
+          <p>
+            <strong>Loading.....</strong>
+          </p>
+        ) : (
+          <TodoList
+            todoList={todoList}
+            onRemoveTodo={removeTodo}
+            onChange={handlePriorityCount}
+          />
+        )}
+      </>
+    );
+  }
 
 export default TodoContainer;
