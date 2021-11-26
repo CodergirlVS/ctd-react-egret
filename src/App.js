@@ -1,15 +1,20 @@
 import React from "react";
-import TodoContainer from "./TodoContainer";
-import NavBar from "./NavBar.js";
+import TodoContainer from "./components/TodoContainer";
+import NavBar from "./components/NavBar.js";
 import styles from "./App.module.css";
 import Image from "./Images/Header.svg";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 function App() {
+  const [todoCount, setTodoCount] = React.useState(0);
+
+  function handleTodoCount(newTodoCount) {
+    setTodoCount(newTodoCount);
+  }
   return (
     <main className={styles.Main}>
       <BrowserRouter>
-        <NavBar />
+        <NavBar todoCount={todoCount} />
         <div className={styles.Body}>
           <div className={styles.Header}>
             <img src={Image} alt="headerImage" height="280px" width="100%" />
@@ -18,13 +23,22 @@ function App() {
             <Switch>
               <Route exact path="/" />
               <Route path="/List1">
-                <TodoContainer tableName={"Work"} />
+                <TodoContainer
+                  tableName={"Work"}
+                  handleTodoCount={handleTodoCount}
+                />
               </Route>
               <Route path="/List2">
-                <TodoContainer tableName={"Personal"} />
+                <TodoContainer
+                  tableName={"Personal"}
+                  handleTodoCount={handleTodoCount}
+                />
               </Route>
               <Route path="/List3">
-                <TodoContainer tableName={"Volunteer"} />
+                <TodoContainer
+                  tableName={"Volunteer"}
+                  handleTodoCount={handleTodoCount}
+                />
               </Route>
             </Switch>
           </div>

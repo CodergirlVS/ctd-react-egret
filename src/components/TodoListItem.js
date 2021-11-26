@@ -1,12 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styles from "./TodoListItem.module.css";
-import Image from "./Images/RmButton.svg";
-import { ReactComponent as Star } from "./Images/StarButton.svg";
+import Image from "../Images/RmButton.svg";
+import { ReactComponent as Star } from "../Images/StarButton.svg";
 import className from "classnames";
 
 function TodoListItem({ todo, onRemoveTodo, onChange }) {
   const starBtnClass = className(styles.StarButton, {
-    [styles.StarButtonActive]: true,
+    [styles.StarButtonActive]: todo.fields.Priority,
   });
 
   return (
@@ -17,7 +18,7 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
         type="button"
         className={starBtnClass}
         onClick={() => {
-          onChange(todo.id);
+          onChange(todo.id, !todo.fields.Priority);
         }}
       >
         <Star />
@@ -36,4 +37,9 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
   );
 }
 
+TodoListItem.propTypes = {
+  todo: PropTypes.object,
+  onRemoveTodo: PropTypes.func,
+  onChange: PropTypes.func,
+};
 export default TodoListItem;
