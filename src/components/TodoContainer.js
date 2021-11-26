@@ -1,12 +1,24 @@
 import React from "react";
+import PropTypes from "prop-types";
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 import styles from "./TodoContainer.module.css";
 
-function TodoContainer({ tableName, increment }) {
+function TodoContainer({ tableName, handleTodoCount }) {
   const [todoList, setTodoList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isError, setIsError] = React.useState(false);
+
+  const [priorityCount, setPriorityCount] = React.useState(0);
+
+  const getTotalPriorityItems = (list) => {
+    const priorityItems = list.filter((item) => item.fields.Priority === true);
+    return priorityItems.length;
+  };
+
+  const handlePriorityCount = (updatedTodoList) => {
+    setPriorityCount(getTotalPriorityItems(updatedTodoList));
+  };
 
   React.useEffect(() => {
     fetch(
@@ -25,6 +37,8 @@ function TodoContainer({ tableName, increment }) {
       .then((result) => {
         setTodoList(result.records);
         setIsLoading(false);
+        handlePriorityCount(result.records);
+        handleTodoCount(result.records.length);
       })
       .catch(() => setIsError(true));
   }, [tableName]);
@@ -76,22 +90,23 @@ function TodoContainer({ tableName, increment }) {
       });
   };
 
-  const updateTodo = (id, fields) => {
+  const updateTodo = (id, priority) => {
     fetch(
-      `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID
+      `https://api.airtable.com/v0/${
+        process.env.REACT_APP_AIRTABLE_BASE_ID
       }/${encodeURI(tableName)}`,
       {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
-          "Content-Type: application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           records: [
             {
               id: id,
               fields: {
-                Priority: fields.Priority,
+                Priority: priority,
               },
             },
           ],
@@ -99,46 +114,41 @@ function TodoContainer({ tableName, increment }) {
       }
     )
       .then((response) => response.json())
-      .then((result) => {
-        console.log(result)
-      })
-    }
+      .then(() => {
+        const updatedTodoList = JSON.parse(JSON.stringify(todoList));
+        const updatedItem = updatedTodoList.find((item) => item.id === id);
+        updatedItem.fields.Priority = priority;
+        setTodoList(updatedTodoList);
+        handlePriorityCount(updatedTodoList);
+      });
+  };
 
-const [priorityCount, setPriorityCount] = React.useState({ count: 0 });
+  return (
+    <>
+      <h1 className={styles.H1}>{tableName}</h1>
+      <h3>What's your plan for the day?</h3>
+      {isError && <p>Something went wrong ...</p>}
+      <p>
+        <strong>Priority count is {priorityCount}</strong>
+      </p>
+      <AddTodoForm onAddTodo={addTodo} />
+      {isLoading ? (
+        <p>
+          <strong>Loading.....</strong>
+        </p>
+      ) : (
+        <TodoList
+          todoList={todoList}
+          onRemoveTodo={removeTodo}
+          onChange={updateTodo}
+        />
+      )}
+    </>
+  );
+}
 
-    const handlePriorityCount = (id) => {
-      const clickedItem = todoList.find((item) => item.id === id);
-
-      if (clickedItem.Priority) {
-        setPriorityCount({
-          count: priorityCount.count - 1,
-        });
-      } else {
-        setPriorityCount({
-          count: priorityCount.count + 1,
-        });
-      }
-    };
-
-    return (
-      <>
-        <h1 className={styles.H1}>{tableName}</h1>
-        {isError && <p>Something went wrong ...</p>}
-        <p>Priority count is {priorityCount.count}</p>
-        <AddTodoForm onAddTodo={addTodo} />
-        {isLoading ? (
-          <p>
-            <strong>Loading.....</strong>
-          </p>
-        ) : (
-          <TodoList
-            todoList={todoList}
-            onRemoveTodo={removeTodo}
-            onChange={handlePriorityCount}
-          />
-        )}
-      </>
-    );
-  }
-
+TodoContainer.propTypes = {
+  tableName: PropTypes.string.isRequired,
+  handleTodoCount: PropTypes.func,
+};
 export default TodoContainer;
