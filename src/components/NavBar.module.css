@@ -7,7 +7,7 @@
 }
 
 .NavBar {
-  max-width: 200px;
+  max-width: 220px;
   width: 30%;
   margin: 0%;
   height: 100vh;
@@ -31,6 +31,35 @@ i {
 
 .Count {
   padding: 5px;
+}
+
+.Star1 {
+  font-size: 75px;
+  color: cornflowerblue;
+  position: relative;
+  display: inline-block;
+}
+
+.Star1:after {
+  content: "1";
+  font-size: 16px;
+  color: white;
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -20%);
+}
+
+.StarContent {
+  position: absolute;
+  top: 37%;
+  left: 37%;
+  z-index: 999999;
+  text-align: center;
+}
+.StarContent span {
+  color: #fff;
 }
 
 @media (max-width: 490px) {

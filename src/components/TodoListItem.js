@@ -12,7 +12,13 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
 
   return (
     <li className={styles.ListItems}>
-      <input type="checkbox" className={styles.strikethrough} />
+      <input
+        type="checkbox"
+        className={styles.strikethrough}
+        onChange={() => {
+          onChange(todo.id, !todo.fields.Completed);
+        }}
+      />
       <span>{todo.fields.Title}</span>
       <button
         type="button"
@@ -22,8 +28,6 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
         }}
       >
         <Star />
-
-        {/* <i class="fa fa-star" aria-hidden="true"></i> */}
       </button>
 
       <button
