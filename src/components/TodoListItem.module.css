@@ -9,10 +9,22 @@
   padding: 8px 8px 0 8px;
   list-style: none;
   align-items: center;
+  line-height: 30px;
 }
 
 .ListItems > *:not(:last-child) {
   margin-right: 20px;
+}
+
+.Titles {
+  word-break: break-word;
+}
+
+.Strikethrough {
+  margin: 0px;
+}
+.StrikeDone + span {
+  text-decoration: line-through;
 }
 
 .StarButton {
@@ -41,10 +53,4 @@
   color: gray;
   padding: 0px;
   margin: 0px;
-}
-.strikethrough {
-  margin: 0px;
-}
-.strikethrough:checked + span {
-  text-decoration: line-through;
 }

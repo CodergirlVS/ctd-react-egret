@@ -1,11 +1,3 @@
-.Logo {
-  padding: 10px;
-  margin: 6px 10px;
-  background-color: transparent;
-  height: 123px;
-  width: auto;
-}
-
 .NavBar {
   max-width: 220px;
   width: 30%;
@@ -15,7 +7,24 @@
   background-color: #f4f4f4;
 }
 
-.List {
+.Logo {
+  padding: 10px;
+  margin: 6px 10px;
+  background-color: transparent;
+  height: 123px;
+  width: auto;
+}
+
+.Ul {
+  list-style-type: none;
+  padding-inline-start: 0;
+}
+
+.Menu > i {
+  display: none;
+}
+
+.SubMenu {
   list-style-type: none;
   font-family: Arial, Helvetica, sans-serif;
   font-size: large;
@@ -25,41 +34,18 @@
   line-height: 45px;
 }
 
+a {
+  text-decoration: none;
+}
+
 i {
   padding: 10px;
 }
 
-.Count {
-  padding: 5px;
-}
-
 .Star1 {
-  font-size: 75px;
-  color: cornflowerblue;
-  position: relative;
-  display: inline-block;
-}
-
-.Star1:after {
-  content: "1";
-  font-size: 16px;
-  color: white;
-  display: inline-block;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -20%);
-}
-
-.StarContent {
-  position: absolute;
-  top: 37%;
-  left: 37%;
-  z-index: 999999;
-  text-align: center;
-}
-.StarContent span {
-  color: #fff;
+  color: black;
+  fill: yellow;
+  height: 15px;
 }
 
 @media (max-width: 490px) {
@@ -69,6 +55,7 @@ i {
     margin: 0;
     padding: 7px 0px;
   }
+
   .NavBar {
     max-width: 100%;
     width: 100%;
@@ -77,17 +64,39 @@ i {
     top: 0px;
     bottom: -15px;
     padding: 3px;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
   }
 
-  .List {
-    font-size: medium;
-    color: black;
-    margin-top: -113px;
-    margin-left: 77px;
-    line-height: 45px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+  .Ul {
+    padding: 0;
+  }
+
+  .Menu > i {
+    display: block;
+    padding: 30px;
+    font-size: 30px;
+  }
+
+  .Menu:hover > .SubMenu {
+    display: block;
+    list-style: none;
+    background-color: #f4f4f4;
+    z-index: 20;
+    font-size: 16px;
+    position: absolute;
+    top: -300px;
+    right: -3px;
+    text-align: center;
+  }
+
+  .SubMenu {
+    display: none;
+  }
+
+  .SubMenu > li:onclick {
+    display: none;
   }
 
   i::after {

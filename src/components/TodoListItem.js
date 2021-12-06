@@ -10,21 +10,26 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
     [styles.StarButtonActive]: todo.fields.Priority,
   });
 
+  const Strikethrough = className(styles.Strikethrough, {
+    [styles.StrikeDone]: todo.fields.Completed,
+  });
+
   return (
     <li className={styles.ListItems}>
       <input
         type="checkbox"
-        className={styles.strikethrough}
+        className={Strikethrough}
         onChange={() => {
-          onChange(todo.id, !todo.fields.Completed);
+          onChange(todo.id, todo.fields.Priority, !todo.fields.Completed);
         }}
       />
-      <span>{todo.fields.Title}</span>
+      <span className={styles.Titles}>{todo.fields.Title}</span>
+
       <button
         type="button"
         className={starBtnClass}
         onClick={() => {
-          onChange(todo.id, !todo.fields.Priority);
+          onChange(todo.id, !todo.fields.Priority, todo.fields.Completed);
         }}
       >
         <Star />

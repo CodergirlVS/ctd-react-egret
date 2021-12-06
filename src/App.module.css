@@ -17,6 +17,11 @@
   border: solid 1px gray;
 }
 
+.Img {
+  height: 280px;
+  width: 100%;
+}
+
 .Canvas {
   text-align: center;
 }
@@ -28,6 +33,12 @@
 
   .Header {
     margin-top: 95px;
-    height: auto;
+    position: relative;
+  }
+
+  .Img {
+    height: 300px;
+    width: 100%;
+    position: absolute;
   }
 }

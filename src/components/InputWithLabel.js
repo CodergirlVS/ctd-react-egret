@@ -29,7 +29,7 @@ const InputWithLabel = ({ value, onChange }) => {
 };
 
 InputWithLabel.propTypes = {
-  value: PropTypes.array,
+  value: PropTypes.string,
   onChange: PropTypes.func,
 };
 export default InputWithLabel;

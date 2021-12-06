@@ -2,12 +2,43 @@ import React from "react";
 import TodoContainer from "./components/TodoContainer";
 import NavBar from "./components/NavBar.js";
 import styles from "./App.module.css";
-import Image from "./Images/Header.svg";
+import { ReactComponent as Image } from "./Images/Header.svg";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
+const getTotalPriorityItemsCount = (list) => {
+  console.log("Passed to list: " + JSON.stringify(list));
+  const priorityItems = list.filter((item) => item.fields.Priority === true);
+  return priorityItems.length;
+};
+
+async function fetchTableCounts(tableName) {
+  const resp = await fetch(
+    `https://api.airtable.com/v0/${
+      process.env.REACT_APP_AIRTABLE_BASE_ID
+    }/${encodeURI(
+      tableName
+    )}?sort%5B0%5D%5Bfield%5D=Title&sort%5B0%5D%5Bdirection%5D=asc`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+      },
+    }
+  );
+  const data = await resp.json();
+  return {
+    count: data.records.length,
+    priorityCount: getTotalPriorityItemsCount(data.records),
+  };
+}
+
 function App() {
-  const [todoCount, setTodoCount] = React.useState(0);
-  const [priorityCount, setPriorityCount] = React.useState(0);
+  const [workCount, setWorkCount] = React.useState(0);
+  const [personalCount, setPersonalCount] = React.useState(0);
+  const [volunteerCount, setVolunteerCount] = React.useState(0);
+  const [workPriorityCount, setWorkPriorityCount] = React.useState(0);
+  const [personalPriorityCount, setPersonalPriorityCount] = React.useState(0);
+  const [volunteerPriorityCount, setVolunteerPriorityCount] = React.useState(0);
 
   const tableName = {
     work: "Work",
@@ -15,21 +46,37 @@ function App() {
     volunteer: "Volunteer",
   };
 
-  function handleTodoCount(newTodoCount) {
-    setTodoCount(newTodoCount);
-  }
+  React.useEffect(() => {
+    async function fetchAll() {
+      const workTable = await fetchTableCounts(tableName.work);
+      setWorkCount(workTable.count);
+      setWorkPriorityCount(workTable.priorityCount);
 
-  function handlePriorityCount(newPriorityCount) {
-    setPriorityCount(newPriorityCount);
-  }
+      const personalTable = await fetchTableCounts(tableName.personal);
+      setPersonalCount(personalTable.count);
+      setPersonalPriorityCount(personalTable.priorityCount);
+
+      const volunteerTable = await fetchTableCounts(tableName.volunteer);
+      setVolunteerCount(volunteerTable.count);
+      setVolunteerPriorityCount(volunteerTable.priorityCount);
+    }
+    fetchAll();
+  }, []);
 
   return (
     <main className={styles.Main}>
       <BrowserRouter>
-        <NavBar todoCount={todoCount} priorityCount={priorityCount} />
+        <NavBar
+          workCount={workCount}
+          personalCount={personalCount}
+          volunteerCount={volunteerCount}
+          workPriorityCount={workPriorityCount}
+          personalPriorityCount={personalPriorityCount}
+          volunteerPriorityCount={volunteerPriorityCount}
+        />
         <div className={styles.Body}>
           <div className={styles.Header}>
-            <img src={Image} alt="headerImage" height="280px" width="100%" />
+            <Image className={styles.Img} />
           </div>
           <div className={styles.Canvas}>
             <Switch>
@@ -37,22 +84,25 @@ function App() {
               <Route path="/List1">
                 <TodoContainer
                   tableName={tableName.work}
-                  handleTodoCount={handleTodoCount}
-                  handlePriorityCount={handlePriorityCount}
+                  //handleTodoCount={handleTodoCount}
+                  handlePriorityCount={setWorkPriorityCount}
+                  changeCount={setWorkCount}
                 />
               </Route>
               <Route path="/List2">
                 <TodoContainer
                   tableName={tableName.personal}
-                  handleTodoCount={handleTodoCount}
-                  handlePriorityCount={handlePriorityCount}
+                  // handleTodoCount={handleTodoCount}
+                  handlePriorityCount={setPersonalPriorityCount}
+                  changeCount={setPersonalCount}
                 />
               </Route>
               <Route path="/List3">
                 <TodoContainer
                   tableName={tableName.volunteer}
-                  handleTodoCount={handleTodoCount}
-                  handlePriorityCount={handlePriorityCount}
+                  // handleTodoCount={handleTodoCount}
+                  handlePriorityCount={setVolunteerPriorityCount}
+                  changeCount={setVolunteerCount}
                 />
               </Route>
             </Switch>

@@ -4,7 +4,7 @@ import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 import styles from "./TodoContainer.module.css";
 
-function TodoContainer({ tableName, handleTodoCount, handlePriorityCount }) {
+function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
   const [todoList, setTodoList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isError, setIsError] = React.useState(false);
@@ -14,13 +14,23 @@ function TodoContainer({ tableName, handleTodoCount, handlePriorityCount }) {
     return priorityItems.length;
   };
 
+  const sortedList = (a, b) => {
+    if (a.Title < b.Title) {
+      return -1;
+    } else if (a.Title > b.Title) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+
   React.useEffect(() => {
     fetch(
       `https://api.airtable.com/v0/${
         process.env.REACT_APP_AIRTABLE_BASE_ID
       }/${encodeURI(
         tableName
-      )}?sort%5B0%5D%5Bfield%5D=Title&sort%5B0%5D%5Bdirection%5D=asc`,
+      )}?view=Grid%20view&sort%5B0%5D%5Bfield%5D=Title&sort%5B0%5D%5Bdirection%5D=asc`,
       {
         headers: {
           Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
@@ -29,10 +39,11 @@ function TodoContainer({ tableName, handleTodoCount, handlePriorityCount }) {
     )
       .then((response) => response.json())
       .then((result) => {
+        result.records.sort(sortedList);
         setTodoList(result.records);
         setIsLoading(false);
         handlePriorityCount(getTotalPriorityItems(result.records));
-        handleTodoCount(result.records.length);
+        changeCount(result.records.length);
       })
       .catch(() => setIsError(true));
   }, [tableName]);
@@ -65,6 +76,7 @@ function TodoContainer({ tableName, handleTodoCount, handlePriorityCount }) {
         .then((response) => response.json())
         .then((data) => {
           setTodoList([...todoList, ...data.records]);
+          changeCount(todoList.length + 1);
         })
         .catch((error) => console.warn("error creating node", error));
     }
@@ -85,6 +97,7 @@ function TodoContainer({ tableName, handleTodoCount, handlePriorityCount }) {
       .then((response) => response.json())
       .then((data) => {
         setTodoList(todoList.filter((item) => item.id !== data.records[0].id));
+        changeCount(todoList.length - 1);
       });
   };
 
@@ -128,9 +141,7 @@ function TodoContainer({ tableName, handleTodoCount, handlePriorityCount }) {
       <h1 className={styles.H1}>{tableName}</h1>
       <h3>What's your plan for the day?</h3>
       {isError && <p>Something went wrong ...</p>}
-      {/* <p>
-        <strong>Priority count is {priorityCount}</strong>
-      </p> */}
+
       <AddTodoForm onAddTodo={addTodo} />
       {isLoading ? (
         <p>
