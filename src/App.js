@@ -80,7 +80,10 @@ function App() {
           </div>
           <div className={styles.Canvas}>
             <Switch>
-              <Route exact path="/" />
+              <Route exact path="/">
+                <h1>Organize it all with Todoist</h1>
+                <h2>Get started here!</h2>
+              </Route>
               <Route path="/List1">
                 <TodoContainer
                   tableName={tableName.work}
