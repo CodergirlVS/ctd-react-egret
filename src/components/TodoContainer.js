@@ -15,12 +15,14 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
   };
 
   const sortedList = (a, b) => {
-    if (a.Title < b.Title) {
+    const aLowercase = a.fields.Title.toLowerCase();
+    const bLowercase = b.fields.Title.toLowerCase();
+    if (aLowercase < bLowercase) {
       return -1;
-    } else if (a.Title > b.Title) {
-      return 1;
-    } else {
+    } else if (aLowercase === bLowercase) {
       return 0;
+    } else {
+      return 1;
     }
   };
 
@@ -49,7 +51,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
   }, [tableName]);
 
   const addTodo = (newTodo) => {
-    if (/^\s*$/.test(newTodo)) {
+    if (!newTodo) {
       return;
     } else {
       fetch(
@@ -75,7 +77,9 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
       )
         .then((response) => response.json())
         .then((data) => {
-          setTodoList([...todoList, ...data.records]);
+          const newTodoArray = [...todoList, ...data.records];
+          newTodoArray.sort(sortedList);
+          setTodoList(newTodoArray);
           changeCount(todoList.length + 1);
         })
         .catch((error) => console.warn("error creating node", error));
