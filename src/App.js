@@ -6,7 +6,6 @@ import { ReactComponent as Image } from "./Images/Header.svg";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const getTotalPriorityItemsCount = (list) => {
-  console.log("Passed to list: " + JSON.stringify(list));
   const priorityItems = list.filter((item) => item.fields.Priority === true);
   return priorityItems.length;
 };

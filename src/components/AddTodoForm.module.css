@@ -9,10 +9,31 @@
   width: 66px;
 }
 
+.SortSelect {
+  font-size: 17px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin: 5px;
+  outline: 0;
+  height: 30px;
+  padding: 0 1em;
+  cursor: pointer;
+}
+
+.SortSelect:hover {
+  background-color: gainsboro;
+  border: 5px;
+}
+
 @media (max-width: 490px) {
   .ButtonAdd {
     font-size: 17px;
     height: 32px;
     width: 56px;
+  }
+
+  .SortSelect {
+    font-size: 17px;
+    height: 32px;
   }
 }

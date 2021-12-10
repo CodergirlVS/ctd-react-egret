@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import InputWithLabel from "./InputWithLabel";
 import styles from "./AddTodoForm.module.css";
 
-function AddTodoForm({ onAddTodo }) {
+function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority }) {
   const [todoTitle, setTodoTitle] = React.useState("");
 
   const handleTitleChange = (event) => {
@@ -17,6 +17,13 @@ function AddTodoForm({ onAddTodo }) {
     onAddTodo(updatedTodoTitle);
     setTodoTitle("");
   };
+  const handleSort = (e) => {
+    if (e.target.value === "Title") {
+      sortByTitle();
+    } else if (e.target.value === "Priority") {
+      sortByPriority();
+    }
+  };
 
   return (
     <form onSubmit={handleAddTodo} className={styles.Form}>
@@ -27,6 +34,14 @@ function AddTodoForm({ onAddTodo }) {
       <button type="submit" disabled={!todoTitle} className={styles.ButtonAdd}>
         Add
       </button>
+      <div style={{ fontSize: "20px", fontWeight: "bold", marginLeft: "5px" }}>
+        Sort By:
+        <select className={styles.SortSelect} onChange={handleSort}>
+          <option>----</option>
+          <option value="Title">Title</option>
+          <option value="Priority">Priority</option>
+        </select>
+      </div>
     </form>
   );
 }
