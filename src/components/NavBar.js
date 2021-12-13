@@ -18,7 +18,7 @@ function Nav({
       <img className={styles.Logo} src={Logo} alt="Logo" />
       <ul className={styles.Ul}>
         <li className={styles.Menu}>
-          <i class="fa fa-bars" aria-hidden="true"></i>
+          <i className="fa fa-bars" aria-hidden="true"></i>
           <ul className={styles.SubMenu}>
             <li>
               <Link to="/">
@@ -35,7 +35,7 @@ function Nav({
             </li>
             <li>
               <i
-                class="fa fa-briefcase"
+                className="fa fa-briefcase"
                 aria-hidden="true"
                 style={{ color: "#a9c73c" }}
               />
@@ -46,7 +46,7 @@ function Nav({
             </li>
             <li>
               <i
-                class="fa fa-user"
+                className="fa fa-user"
                 aria-hidden="true"
                 style={{ color: "blue" }}
               ></i>
@@ -61,7 +61,7 @@ function Nav({
             </li>
             <li>
               <i
-                class="fa fa-heart"
+                className="fa fa-heart"
                 aria-hidden="true"
                 style={{ color: "#fa3983" }}
               ></i>
@@ -82,6 +82,11 @@ function Nav({
 }
 
 Nav.propTypes = {
-  todoCount: PropTypes.number,
+  workCount: PropTypes.number,
+  personalCount: PropTypes.number,
+  volunteerCount: PropTypes.number,
+  workPriorityCount: PropTypes.number,
+  personalPriorityCount: PropTypes.number,
+  volunteerPriorityCount: PropTypes.number,
 };
 export default Nav;

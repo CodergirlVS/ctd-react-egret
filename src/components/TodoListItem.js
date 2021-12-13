@@ -7,7 +7,7 @@ import className from "classnames";
 
 function TodoListItem({ todo, onRemoveTodo, onChange }) {
   const [toggle, setToggle] = React.useState(true);
-  const [name, setName] = React.useState(todo.fields.Title);
+  const [title, setTitle] = React.useState(todo.fields.Title);
 
   const starBtnClass = className(styles.StarButton, {
     [styles.StarButtonActive]: todo.fields.Priority,
@@ -27,16 +27,16 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
   if (toggle) {
     tags = (
       <span className={styles.Titles} onClick={editTodo}>
-        {name}
+        {title}
       </span>
     );
   } else {
     tags = (
       <input
         type="text"
-        value={name}
+        value={title}
         onChange={(event) => {
-          setName(event.target.value);
+          setTitle(event.target.value);
         }}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === "Escape") {
@@ -47,7 +47,7 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
               todo.id,
               todo.fields.Priority,
               todo.fields.Completed,
-              name
+              title
             );
           }
         }}

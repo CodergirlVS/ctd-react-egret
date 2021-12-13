@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Pagination.module.css";
 import className from "classnames";
+import PropTypes from "prop-types";
 
 const Pagination = ({
   titlesperPage,
@@ -58,4 +59,10 @@ const Pagination = ({
   );
 };
 
+Pagination.propTypes = {
+  titlesperPage: PropTypes.number,
+  totalTitles: PropTypes.number,
+  handlePageChange: PropTypes.func,
+  activePg: PropTypes.number,
+};
 export default Pagination;

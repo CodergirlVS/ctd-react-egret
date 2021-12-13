@@ -2,8 +2,9 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import InputWithLabel from "./InputWithLabel";
 import styles from "./AddTodoForm.module.css";
+import { ReactComponent as Star } from "../Images/StarButton.svg";
 
-function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority, onEditTitle }) {
+function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority }) {
   const [todoTitle, setTodoTitle] = React.useState("");
 
   const handleTitleChange = (event) => {
@@ -35,6 +36,10 @@ function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority, onEditTitle }) {
       <button type="submit" disabled={!todoTitle} className={styles.ButtonAdd}>
         Add
       </button>
+      <span className={styles.StarButton}>
+        <strong> Priority : </strong>
+        <Star />
+      </span>
       <div style={{ fontSize: "20px", fontWeight: "bold", marginLeft: "5px" }}>
         Sort By:
         <select className={styles.SortSelect} onChange={handleSort}>
@@ -48,6 +53,8 @@ function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority, onEditTitle }) {
 }
 AddTodoForm.propTypes = {
   onAddTodo: PropTypes.func,
+  sortByTitle: PropTypes.func,
+  sortByPriority: PropTypes.func,
 };
 
 export default AddTodoForm;

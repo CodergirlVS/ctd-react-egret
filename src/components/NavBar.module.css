@@ -44,8 +44,8 @@ i {
 
 .Star1 {
   color: black;
-  fill: yellow;
-  height: 15px;
+  fill: #ffac33;
+  height: 20px;
 }
 
 @media (min-width: 360px) and (max-width: 700px) {
@@ -100,5 +100,16 @@ i {
 
   i::after {
     display: none;
+  }
+
+  .Star1 {
+    height: 15px;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1000px) {
+  .SubMenu {
+    font-size: 19px;
+    padding: 39px;
   }
 }

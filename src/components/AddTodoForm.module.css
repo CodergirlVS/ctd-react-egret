@@ -25,11 +25,24 @@
   border: 5px;
 }
 
+.StarButton {
+  padding: 20px;
+}
+
+.StarButton > svg {
+  height: 15px;
+  fill: #ffac33;
+}
+
 @media (max-width: 490px) {
   .ButtonAdd {
     font-size: 17px;
     height: 32px;
     width: 56px;
+  }
+
+  .StarButton {
+    padding: 14px;
   }
 
   .SortSelect {

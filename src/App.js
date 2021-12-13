@@ -40,11 +40,26 @@ function App() {
   const [volunteerPriorityCount, setVolunteerPriorityCount] = React.useState(0);
   const [colorTheme, setColorTheme] = React.useState("ThemeDefault");
 
-  const tableName = {
-    work: "Work",
-    personal: "Personal",
-    volunteer: "Volunteer",
+  const handlePriorityCount = (count) => {
+    if (tableName === tableName.work) {
+      setWorkPriorityCount(count);
+    }
+
+    if (tableName === tableName.personal) {
+      setPersonalPriorityCount(count);
+    }
+
+    if (tableName === tableName.volunteer) {
+      setVolunteerPriorityCount(count);
+    }
   };
+  const tableName = React.useMemo(() => {
+    return {
+      work: "Work",
+      personal: "Personal",
+      volunteer: "Volunteer",
+    };
+  }, []);
 
   React.useEffect(() => {
     // check for selected theme localstorage value.
@@ -76,7 +91,7 @@ function App() {
       setVolunteerPriorityCount(volunteerTable.priorityCount);
     }
     fetchAll();
-  }, []);
+  }, [tableName]);
 
   return (
     <main className={`Main ${colorTheme}`}>
@@ -98,14 +113,14 @@ function App() {
             className={`${colorTheme === "ThemePink" ? "active" : ""}`}
           />
           <div
-            id="ThemeBlack"
-            onClick={() => handleClick("ThemeBlack")}
-            className={`${colorTheme === "ThemeBlack" ? "active" : ""}`}
-          />
-          <div
             id="ThemeDefault"
             onClick={() => handleClick("ThemeDefault")}
             className={`${colorTheme === "ThemeDefault" ? "active" : ""}`}
+          />
+          <div
+            id="ThemeBlack"
+            onClick={() => handleClick("ThemeBlack")}
+            className={`${colorTheme === "ThemeBlack" ? "active" : ""}`}
           />
         </div>
         <NavBar
@@ -130,24 +145,21 @@ function App() {
               <Route path="/List1">
                 <TodoContainer
                   tableName={tableName.work}
-                  //handleTodoCount={handleTodoCount}
-                  handlePriorityCount={setWorkPriorityCount}
+                  handlePriorityCount={handlePriorityCount}
                   changeCount={setWorkCount}
                 />
               </Route>
               <Route path="/List2">
                 <TodoContainer
                   tableName={tableName.personal}
-                  // handleTodoCount={handleTodoCount}
-                  handlePriorityCount={setPersonalPriorityCount}
+                  handlePriorityCount={handlePriorityCount}
                   changeCount={setPersonalCount}
                 />
               </Route>
               <Route path="/List3">
                 <TodoContainer
                   tableName={tableName.volunteer}
-                  // handleTodoCount={handleTodoCount}
-                  handlePriorityCount={setVolunteerPriorityCount}
+                  handlePriorityCount={handlePriorityCount}
                   changeCount={setVolunteerCount}
                 />
               </Route>

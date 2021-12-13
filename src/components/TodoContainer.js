@@ -30,19 +30,20 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
     }
   };
 
+  const sortedPriorityList = (a, b) => {
+    if (a.fields.Priority) {
+      return -1;
+    } else if (b.fields.Priority) {
+      return 1;
+    }
+  };
+
   const sortByTitle = () => {
     setTodoList([...todoList.sort(sortedTitleList)]);
   };
 
   const sortByPriority = () => {
-    const sortedPriorityList = todoList.sort((a, b) => {
-      if (a.fields.Priority) {
-        return -1;
-      } else if (b.fields.Priority) {
-        return 1;
-      }
-    });
-    setTodoList([...sortedPriorityList]);
+    setTodoList([...todoList.sort(sortedPriorityList)]);
   };
 
   React.useEffect(() => {
@@ -65,7 +66,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
         changeCount(result.records.length);
       })
       .catch(() => setIsError(true));
-  }, [tableName]);
+  }, [tableName, changeCount, handlePriorityCount]);
 
   const addTodo = (newTodo) => {
     if (!newTodo) {
@@ -174,7 +175,6 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
         onAddTodo={addTodo}
         sortByTitle={sortByTitle}
         sortByPriority={sortByPriority}
-        onEditTitle={updateTodo}
       />
       {isLoading ? (
         <p>
@@ -201,7 +201,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
 
 TodoContainer.propTypes = {
   tableName: PropTypes.string.isRequired,
-  handleTodoCount: PropTypes.func,
+  changeCount: PropTypes.func,
   handlePriorityCount: PropTypes.func,
 };
 export default TodoContainer;
