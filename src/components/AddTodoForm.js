@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import InputWithLabel from "./InputWithLabel";
 import styles from "./AddTodoForm.module.css";
 
-function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority }) {
+function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority, onEditTitle }) {
   const [todoTitle, setTodoTitle] = React.useState("");
 
   const handleTitleChange = (event) => {
@@ -17,6 +17,7 @@ function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority }) {
     onAddTodo(updatedTodoTitle);
     setTodoTitle("");
   };
+
   const handleSort = (e) => {
     if (e.target.value === "Title") {
       sortByTitle();

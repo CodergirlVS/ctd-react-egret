@@ -37,7 +37,7 @@ function Nav({
               <i
                 class="fa fa-briefcase"
                 aria-hidden="true"
-                style={{ color: "green" }}
+                style={{ color: "#a9c73c" }}
               />
               <Link to="/List1">
                 Work ({workCount}){" "}

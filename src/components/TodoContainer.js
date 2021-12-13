@@ -10,7 +10,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isError, setIsError] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [titlesPerPage, setTitlesPerPage] = React.useState(5);
+  const titlesPerPage = 5;
 
   const getTotalPriorityItems = (list) => {
     const priorityItems = list.filter((item) => item.fields.Priority === true);
@@ -122,7 +122,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
       });
   };
 
-  const updateTodo = (id, priority, completed) => {
+  const updateTodo = (id, priority, completed, newTitle) => {
     fetch(
       `https://api.airtable.com/v0/${
         process.env.REACT_APP_AIRTABLE_BASE_ID
@@ -140,6 +140,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
               fields: {
                 Priority: priority,
                 Completed: completed,
+                Title: newTitle,
               },
             },
           ],
@@ -152,7 +153,8 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
         const updatedItem = updatedTodoList.find((item) => item.id === id);
         updatedItem.fields.Priority = priority;
         updatedItem.fields.Completed = completed;
-        console.log(updatedTodoList);
+        updatedItem.fields.Title = newTitle;
+
         setTodoList(updatedTodoList);
         handlePriorityCount(getTotalPriorityItems(updatedTodoList));
       });
@@ -172,6 +174,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
         onAddTodo={addTodo}
         sortByTitle={sortByTitle}
         sortByPriority={sortByPriority}
+        onEditTitle={updateTodo}
       />
       {isLoading ? (
         <p>
@@ -188,6 +191,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
             titlesperPage={titlesPerPage}
             totalTitles={todoList.length}
             handlePageChange={setCurrentPage}
+            activePg={currentPage}
           />
         </>
       )}
