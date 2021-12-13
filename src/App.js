@@ -1,12 +1,11 @@
 import React from "react";
 import TodoContainer from "./components/TodoContainer";
 import NavBar from "./components/NavBar.js";
-import styles from "./App.module.css";
+import "./App.scss";
 import { ReactComponent as Image } from "./Images/Header.svg";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const getTotalPriorityItemsCount = (list) => {
-  console.log("Passed to list: " + JSON.stringify(list));
   const priorityItems = list.filter((item) => item.fields.Priority === true);
   return priorityItems.length;
 };
@@ -39,13 +38,44 @@ function App() {
   const [workPriorityCount, setWorkPriorityCount] = React.useState(0);
   const [personalPriorityCount, setPersonalPriorityCount] = React.useState(0);
   const [volunteerPriorityCount, setVolunteerPriorityCount] = React.useState(0);
+  const [colorTheme, setColorTheme] = React.useState("ThemeDefault");
 
-  const tableName = {
-    work: "Work",
-    personal: "Personal",
-    volunteer: "Volunteer",
+  const handlePriorityCount = (count) => {
+    if (tableName === tableName.work) {
+      setWorkPriorityCount(count);
+    }
+
+    if (tableName === tableName.personal) {
+      setPersonalPriorityCount(count);
+    }
+
+    if (tableName === tableName.volunteer) {
+      setVolunteerPriorityCount(count);
+    }
+  };
+  const tableName = React.useMemo(() => {
+    return {
+      work: "Work",
+      personal: "Personal",
+      volunteer: "Volunteer",
+    };
+  }, []);
+
+  React.useEffect(() => {
+    // check for selected theme localstorage value.
+    const currentThemeColor = localStorage.getItem("theme-color");
+    if (currentThemeColor) {
+      setColorTheme(currentThemeColor);
+    }
+  }, []);
+
+  //set color theme.
+  const handleClick = (theme) => {
+    setColorTheme(theme);
+    localStorage.setItem("theme-color", theme);
   };
 
+  // To fetch all the tables at load and get the todoCounts and Priority status to be displayed in the navbar.
   React.useEffect(() => {
     async function fetchAll() {
       const workTable = await fetchTableCounts(tableName.work);
@@ -61,11 +91,38 @@ function App() {
       setVolunteerPriorityCount(volunteerTable.priorityCount);
     }
     fetchAll();
-  }, []);
+  }, [tableName]);
 
   return (
-    <main className={styles.Main}>
+    <main className={`Main ${colorTheme}`}>
       <BrowserRouter>
+        <div className="ThemeOptions">
+          <div
+            id="ThemeGreen"
+            onClick={() => handleClick("ThemeGreen")}
+            className={`${colorTheme === "ThemeGreen" ? "active" : ""}`}
+          />
+          <div
+            id="ThemeBlue"
+            onClick={() => handleClick("ThemeBlue")}
+            className={`${colorTheme === "ThemeBlue" ? "active" : ""}`}
+          />
+          <div
+            id="ThemePink"
+            onClick={() => handleClick("ThemePink")}
+            className={`${colorTheme === "ThemePink" ? "active" : ""}`}
+          />
+          <div
+            id="ThemeDefault"
+            onClick={() => handleClick("ThemeDefault")}
+            className={`${colorTheme === "ThemeDefault" ? "active" : ""}`}
+          />
+          <div
+            id="ThemeBlack"
+            onClick={() => handleClick("ThemeBlack")}
+            className={`${colorTheme === "ThemeBlack" ? "active" : ""}`}
+          />
+        </div>
         <NavBar
           workCount={workCount}
           personalCount={personalCount}
@@ -74,37 +131,35 @@ function App() {
           personalPriorityCount={personalPriorityCount}
           volunteerPriorityCount={volunteerPriorityCount}
         />
-        <div className={styles.Body}>
-          <div className={styles.Header}>
-            <Image className={styles.Img} />
+        <div className="DataContainer">
+          <div className="Header">
+            <Image className="HeaderImg" />
           </div>
-          <div className={styles.Canvas}>
+
+          <div className="Canvas">
             <Switch>
               <Route exact path="/">
-                <h1>Organize it all with Todoist</h1>
+                <h1>Organize it all with US</h1>
                 <h2>Get started here!</h2>
               </Route>
               <Route path="/List1">
                 <TodoContainer
                   tableName={tableName.work}
-                  //handleTodoCount={handleTodoCount}
-                  handlePriorityCount={setWorkPriorityCount}
+                  handlePriorityCount={handlePriorityCount}
                   changeCount={setWorkCount}
                 />
               </Route>
               <Route path="/List2">
                 <TodoContainer
                   tableName={tableName.personal}
-                  // handleTodoCount={handleTodoCount}
-                  handlePriorityCount={setPersonalPriorityCount}
+                  handlePriorityCount={handlePriorityCount}
                   changeCount={setPersonalCount}
                 />
               </Route>
               <Route path="/List3">
                 <TodoContainer
                   tableName={tableName.volunteer}
-                  // handleTodoCount={handleTodoCount}
-                  handlePriorityCount={setVolunteerPriorityCount}
+                  handlePriorityCount={handlePriorityCount}
                   changeCount={setVolunteerCount}
                 />
               </Route>

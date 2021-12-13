@@ -41,7 +41,7 @@
 }
 
 .StarButtonActive > svg {
-  fill: yellow;
+  fill: #ffac33;
 }
 
 .RmvButton {

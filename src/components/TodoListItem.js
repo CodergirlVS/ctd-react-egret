@@ -6,6 +6,9 @@ import { ReactComponent as Star } from "../Images/StarButton.svg";
 import className from "classnames";
 
 function TodoListItem({ todo, onRemoveTodo, onChange }) {
+  const [toggle, setToggle] = React.useState(true);
+  const [title, setTitle] = React.useState(todo.fields.Title);
+
   const starBtnClass = className(styles.StarButton, {
     [styles.StarButtonActive]: todo.fields.Priority,
   });
@@ -13,6 +16,44 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
   const Strikethrough = className(styles.Strikethrough, {
     [styles.StrikeDone]: todo.fields.Completed,
   });
+
+  const editTodo = (event) => {
+    setToggle(!toggle);
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  let tags;
+  if (toggle) {
+    tags = (
+      <span className={styles.Titles} onClick={editTodo}>
+        {title}
+      </span>
+    );
+  } else {
+    tags = (
+      <input
+        type="text"
+        value={title}
+        onChange={(event) => {
+          setTitle(event.target.value);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === "Escape") {
+            setToggle(!toggle);
+            event.preventDefault();
+            event.stopPropagation();
+            onChange(
+              todo.id,
+              todo.fields.Priority,
+              todo.fields.Completed,
+              title
+            );
+          }
+        }}
+      />
+    );
+  }
 
   return (
     <li className={styles.ListItems}>
@@ -23,8 +64,7 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
           onChange(todo.id, todo.fields.Priority, !todo.fields.Completed);
         }}
       />
-      <span className={styles.Titles}>{todo.fields.Title}</span>
-
+      {tags}
       <button
         type="button"
         className={starBtnClass}
@@ -34,7 +74,6 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
       >
         <Star />
       </button>
-
       <button
         className={styles.RmvButton}
         type="button"

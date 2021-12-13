@@ -1,0 +1,32 @@
+.PaginationUl {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.PageItem {
+  padding: 2px;
+  text-decoration: none;
+}
+
+.PageButton {
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+  padding: 8px 16px;
+  background-color: transparent;
+}
+
+.PageButtonActive {
+  background-color: #b3b2b2;
+  border-radius: 5px;
+}
+
+.PageButton:hover {
+  background-color: #ddd;
+  border-radius: 5px;
+  color: #ff6575;
+}
