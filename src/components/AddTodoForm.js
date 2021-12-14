@@ -9,6 +9,7 @@ function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority }) {
 
   const handleTitleChange = (event) => {
     const newTodoTitle = event.target.value;
+    console.log("Title change function");
     setTodoTitle(newTodoTitle);
   };
 
@@ -17,6 +18,7 @@ function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority }) {
     const updatedTodoTitle = todoTitle.trim();
     onAddTodo(updatedTodoTitle);
     setTodoTitle("");
+    console.log("Add function");
   };
 
   const handleSort = (e) => {
@@ -30,8 +32,8 @@ function AddTodoForm({ onAddTodo, sortByTitle, sortByPriority }) {
   return (
     <form onSubmit={handleAddTodo} className={styles.Form}>
       <InputWithLabel
-        value={todoTitle}
-        onChange={handleTitleChange}
+        todoTitle={todoTitle}
+        handleTitleChange={handleTitleChange}
       ></InputWithLabel>
       <button type="submit" disabled={!todoTitle} className={styles.ButtonAdd}>
         Add

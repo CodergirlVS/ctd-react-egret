@@ -2,12 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./InputWithLabel.module.css";
 
-const InputWithLabel = ({ value, onChange }) => {
+const InputWithLabel = ({ todoTitle, handleTitleChange }) => {
   const inputRef = React.useRef();
 
   React.useEffect(() => {
     inputRef.current.focus();
-  });
+  }, []);
 
   return (
     <>
@@ -20,8 +20,8 @@ const InputWithLabel = ({ value, onChange }) => {
         name="title"
         placeholder="Enter a new list item..."
         ref={inputRef}
-        value={value}
-        onChange={onChange}
+        value={todoTitle}
+        onChange={handleTitleChange}
         className={styles.InputAdd}
       />
     </>
@@ -29,7 +29,7 @@ const InputWithLabel = ({ value, onChange }) => {
 };
 
 InputWithLabel.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
+  todoTitle: PropTypes.string,
+  handleTitleChange: PropTypes.func,
 };
 export default InputWithLabel;

@@ -5,7 +5,7 @@ import Image from "../Images/RmButton.svg";
 import { ReactComponent as Star } from "../Images/StarButton.svg";
 import className from "classnames";
 
-function TodoListItem({ todo, onRemoveTodo, onChange }) {
+function TodoListItem({ todo, onRemoveTodo, updateTodo }) {
   const [toggle, setToggle] = React.useState(true);
   const [title, setTitle] = React.useState(todo.fields.Title);
 
@@ -43,7 +43,7 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
             setToggle(!toggle);
             event.preventDefault();
             event.stopPropagation();
-            onChange(
+            updateTodo(
               todo.id,
               todo.fields.Priority,
               todo.fields.Completed,
@@ -61,7 +61,7 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
         type="checkbox"
         className={Strikethrough}
         onChange={() => {
-          onChange(todo.id, todo.fields.Priority, !todo.fields.Completed);
+          updateTodo(todo.id, todo.fields.Priority, !todo.fields.Completed);
         }}
       />
       {tags}
@@ -69,7 +69,7 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
         type="button"
         className={starBtnClass}
         onClick={() => {
-          onChange(todo.id, !todo.fields.Priority, todo.fields.Completed);
+          updateTodo(todo.id, !todo.fields.Priority, todo.fields.Completed);
         }}
       >
         <Star />
@@ -88,6 +88,6 @@ function TodoListItem({ todo, onRemoveTodo, onChange }) {
 TodoListItem.propTypes = {
   todo: PropTypes.object,
   onRemoveTodo: PropTypes.func,
-  onChange: PropTypes.func,
+  updateTodo: PropTypes.func,
 };
 export default TodoListItem;

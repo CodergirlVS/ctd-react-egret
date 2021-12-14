@@ -185,7 +185,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
           <TodoList
             todoList={currentTitles}
             onRemoveTodo={removeTodo}
-            onChange={updateTodo}
+            updateTodo={updateTodo}
           />
           <Pagination
             titlesperPage={titlesPerPage}
