@@ -62,7 +62,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
         result.records.sort(sortedTitleList);
         setTodoList(result.records);
         setIsLoading(false);
-        handlePriorityCount(getTotalPriorityItems(result.records));
+        handlePriorityCount(getTotalPriorityItems(result.records), tableName);
         changeCount(result.records.length);
       })
       .catch(() => setIsError(true));
@@ -157,7 +157,7 @@ function TodoContainer({ tableName, changeCount, handlePriorityCount }) {
         updatedItem.fields.Title = newTitle;
 
         setTodoList(updatedTodoList);
-        handlePriorityCount(getTotalPriorityItems(updatedTodoList));
+        handlePriorityCount(getTotalPriorityItems(updatedTodoList), tableName);
       });
   };
 

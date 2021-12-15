@@ -40,16 +40,16 @@ function App() {
   const [volunteerPriorityCount, setVolunteerPriorityCount] = React.useState(0);
   const [colorTheme, setColorTheme] = React.useState("ThemeDefault");
 
-  const handlePriorityCount = (count) => {
-    if (tableName === tableName.work) {
+  const handlePriorityCount = (count, currentTableName) => {
+    if (currentTableName === tableName.work) {
       setWorkPriorityCount(count);
     }
 
-    if (tableName === tableName.personal) {
+    if (currentTableName === tableName.personal) {
       setPersonalPriorityCount(count);
     }
 
-    if (tableName === tableName.volunteer) {
+    if (currentTableName === tableName.volunteer) {
       setVolunteerPriorityCount(count);
     }
   };
