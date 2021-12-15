@@ -4,3 +4,9 @@
   padding: 20px;
   text-decoration: underline;
 }
+
+@media print {
+  .H1 {
+    display: block;
+  }
+}

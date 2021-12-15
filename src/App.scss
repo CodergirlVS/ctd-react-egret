@@ -202,3 +202,9 @@ body {
     z-index: 9999;
   }
 }
+@media print {
+  .ThemeOptions,
+  .Header {
+    display: none;
+  }
+}

@@ -110,6 +110,12 @@ i {
 @media (min-width: 701px) and (max-width: 1000px) {
   .SubMenu {
     font-size: 19px;
-    padding: 39px;
+    padding: 25px;
+  }
+}
+
+@media print {
+  .Ul {
+    display: none;
   }
 }

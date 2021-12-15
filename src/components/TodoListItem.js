@@ -61,7 +61,12 @@ function TodoListItem({ todo, onRemoveTodo, updateTodo }) {
         type="checkbox"
         className={Strikethrough}
         onChange={() => {
-          updateTodo(todo.id, todo.fields.Priority, !todo.fields.Completed);
+          updateTodo(
+            todo.id,
+            todo.fields.Priority,
+            !todo.fields.Completed,
+            title
+          );
         }}
       />
       {tags}
@@ -69,7 +74,12 @@ function TodoListItem({ todo, onRemoveTodo, updateTodo }) {
         type="button"
         className={starBtnClass}
         onClick={() => {
-          updateTodo(todo.id, !todo.fields.Priority, todo.fields.Completed);
+          updateTodo(
+            todo.id,
+            !todo.fields.Priority,
+            todo.fields.Completed,
+            title
+          );
         }}
       >
         <Star />
